@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Lockorder/Lockorder.csproj" />
+    <Project Path="src/Lockorder.Core/Lockorder.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Lockorder.Tests/Lockorder.Tests.csproj" />
+  </Folder>
+</Solution>
