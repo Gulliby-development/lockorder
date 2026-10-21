@@ -35,7 +35,7 @@ usage: lockorder check [--ignore LOCK]... TRACE
        lockorder threads [--ignore LOCK]... TRACE
 ```
 
-`TRACE` is a path to a trace file, or `-` to read standard input. The CLI accepts repeatable `--ignore LOCK` and `--ignore=LOCK` options; ignored locks are omitted from replay and its counts.
+`TRACE` is a path to a trace file, or `-` to read standard input. The CLI accepts repeatable `--ignore LOCK` and `--ignore=LOCK` options; ignored locks are omitted from replay and its counts. A value may also list several locks separated by commas: `--ignore cache,log` is the same as `--ignore cache --ignore log`.
 
 This `trace.log` example has two workers that acquire the same locks in opposite orders, plus a janitor:
 
