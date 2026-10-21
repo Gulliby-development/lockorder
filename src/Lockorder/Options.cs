@@ -56,15 +56,18 @@ public sealed record Options(
             }
         }
 
-        foreach (var ignoredLock in ignoredLockValues)
+        foreach (var value in ignoredLockValues)
         {
-            if (!Lockorder.Core.Names.IsValidName(ignoredLock))
+            foreach (var ignoredLock in value.Split(','))
             {
-                throw new Lockorder.Core.LockorderException(
-                    $"invalid --ignore {Lockorder.Core.Names.Show(ignoredLock)} (expected a lock name)");
-            }
+                if (!Lockorder.Core.Names.IsValidName(ignoredLock))
+                {
+                    throw new Lockorder.Core.LockorderException(
+                        $"invalid --ignore {Lockorder.Core.Names.Show(ignoredLock)} (expected a lock name)");
+                }
 
-            ignoredLocks.Add(ignoredLock);
+                ignoredLocks.Add(ignoredLock);
+            }
         }
 
         if (traceArguments.Count == 0)
