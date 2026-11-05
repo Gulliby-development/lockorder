@@ -4,7 +4,7 @@ public static class Report
 {
     public const string Usage =
         "usage: lockorder check [--ignore LOCK]... TRACE\n" +
-        "       lockorder edges [--ignore LOCK]... TRACE\n" +
+        "       lockorder edges [--ignore LOCK]... [--min-threads N] TRACE\n" +
         "       lockorder order [--ignore LOCK]... TRACE\n" +
         "       lockorder threads [--ignore LOCK]... TRACE\n";
 
@@ -26,11 +26,11 @@ public static class Report
         return string.Concat(findings.Select(finding => FormatFinding(display, finding)));
     }
 
-    public static string Edges(ReplayResult replay)
+    public static string Edges(ReplayResult replay, int minThreads = 1)
     {
         ArgumentNullException.ThrowIfNull(replay);
 
-        var rows = replay.Edges.Select(edge => new[]
+        var rows = replay.Edges.Where(edge => edge.Threads.Count >= minThreads).Select(edge => new[]
         {
             edge.From,
             edge.To,

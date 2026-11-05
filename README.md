@@ -30,12 +30,14 @@ The four commands are `check`, `edges`, `order`, and `threads`. Their syntax is:
 
 ```text
 usage: lockorder check [--ignore LOCK]... TRACE
-       lockorder edges [--ignore LOCK]... TRACE
+       lockorder edges [--ignore LOCK]... [--min-threads N] TRACE
        lockorder order [--ignore LOCK]... TRACE
        lockorder threads [--ignore LOCK]... TRACE
 ```
 
 `TRACE` is a path to a trace file, or `-` to read standard input. The CLI accepts repeatable `--ignore LOCK` and `--ignore=LOCK` options; ignored locks are omitted from replay and its counts. A value may also list several locks separated by commas: `--ignore cache,log` is the same as `--ignore cache --ignore log`.
+
+`edges` also takes `--min-threads N` (or `--min-threads=N`), a whole number from 1 to 100 (default 1): only the edges that at least N distinct threads recorded are listed, and the table keeps its header when none is left. The option applies after `--ignore` and the other commands refuse it as an unknown option.
 
 This `trace.log` example has two workers that acquire the same locks in opposite orders, plus a janitor:
 

@@ -14,7 +14,7 @@ public class CliTests
         Assert.Equal(0, result.ExitCode);
         Assert.Equal(
             "usage: lockorder check [--ignore LOCK]... TRACE\n"
-                + "       lockorder edges [--ignore LOCK]... TRACE\n"
+                + "       lockorder edges [--ignore LOCK]... [--min-threads N] TRACE\n"
                 + "       lockorder order [--ignore LOCK]... TRACE\n"
                 + "       lockorder threads [--ignore LOCK]... TRACE\n",
             result.Stdout);
@@ -418,7 +418,7 @@ public class CliTests
         Assert.Equal(0, exitCode);
         Assert.Equal(
             "usage: lockorder check [--ignore LOCK]... TRACE\n"
-                + "       lockorder edges [--ignore LOCK]... TRACE\n"
+                + "       lockorder edges [--ignore LOCK]... [--min-threads N] TRACE\n"
                 + "       lockorder order [--ignore LOCK]... TRACE\n"
                 + "       lockorder threads [--ignore LOCK]... TRACE\n",
             stdout.ToString());
