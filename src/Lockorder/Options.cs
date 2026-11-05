@@ -4,7 +4,8 @@ public sealed record Options(
     string Command,
     string Trace,
     IReadOnlySet<string> IgnoredLocks,
-    bool ShowHelp)
+    bool ShowHelp,
+    int MinThreads = 1)
 {
     public static Options Parse(string[] args)
     {
@@ -29,11 +30,31 @@ public sealed record Options(
         var ignoredLockValues = new List<string>();
         var ignoredLocks = new HashSet<string>(StringComparer.Ordinal);
         var traceArguments = new List<string>();
+        var minThreads = 1;
 
         for (var index = 1; index < args.Length; index++)
         {
             var argument = args[index];
-            if (argument == "--ignore")
+            if (command == "edges" && (argument == "--min-threads" || argument.StartsWith("--min-threads=", StringComparison.Ordinal)))
+            {
+                string value;
+                if (argument == "--min-threads")
+                {
+                    if (index + 1 >= args.Length)
+                    {
+                        throw new Lockorder.Core.LockorderException("--min-threads needs a value");
+                    }
+
+                    value = args[++index];
+                }
+                else
+                {
+                    value = argument["--min-threads=".Length..];
+                }
+
+                minThreads = ParseMinThreads(value);
+            }
+            else if (argument == "--ignore")
             {
                 if (index + 1 >= args.Length)
                 {
@@ -80,6 +101,20 @@ public sealed record Options(
             throw new Lockorder.Core.LockorderException("too many arguments");
         }
 
-        return new Options(command, traceArguments[0], ignoredLocks, false);
+        return new Options(command, traceArguments[0], ignoredLocks, false, minThreads);
+    }
+
+    private static int ParseMinThreads(string value)
+    {
+        var plainDigits = value.Length is >= 1 and <= 3
+            && value.All(static character => character is >= '0' and <= '9')
+            && (value.Length == 1 || value[0] != '0');
+        if (plainDigits && int.Parse(value, System.Globalization.CultureInfo.InvariantCulture) is >= 1 and <= 100 and var parsed)
+        {
+            return parsed;
+        }
+
+        throw new Lockorder.Core.LockorderException(
+            $"invalid --min-threads {Lockorder.Core.Names.Show(value)} (expected an integer from 1 to 100)");
     }
 }

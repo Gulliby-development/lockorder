@@ -6,7 +6,7 @@ public sealed class DocsTests
 {
     private const string UsageLines =
         "usage: lockorder check [--ignore LOCK]... TRACE\n" +
-        "       lockorder edges [--ignore LOCK]... TRACE\n" +
+        "       lockorder edges [--ignore LOCK]... [--min-threads N] TRACE\n" +
         "       lockorder order [--ignore LOCK]... TRACE\n" +
         "       lockorder threads [--ignore LOCK]... TRACE\n";
 

@@ -70,7 +70,7 @@ public static class Cli
                     : 0;
 
             case "edges":
-                stdout.Write(Report.Edges(replay));
+                stdout.Write(Report.Edges(replay, options.MinThreads));
                 return 0;
 
             case "order":
